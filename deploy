@@ -1,0 +1,7 @@
+UPDATE_MSG=$1
+ENV=$2 
+git add .
+git commit -m $UPDATE_MSG
+git push
+source venv/bin/activate
+zappa update $ENV
