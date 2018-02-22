@@ -7,6 +7,7 @@ from cerberus import Validator
 from exceptions import payLoadIsMissing
 from exceptions import malformedJson
 from exceptions import payloadNotMatchingSchema
+from exceptions import NoAPIKeyPresent
 import payments
 from logger import Logger
 LOG = Logger()
@@ -14,6 +15,7 @@ LOG = Logger()
 app = Flask(__name__)
 
 
+@app.errorhandler(NoAPIKeyPresent)
 @app.errorhandler(payLoadIsMissing)
 @app.errorhandler(payloadNotMatchingSchema)
 @app.errorhandler(malformedJson)

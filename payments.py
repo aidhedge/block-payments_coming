@@ -43,7 +43,7 @@ def queryCurrencyApi(pair, date):
 
 def result(data):
     payload = data['project_data']
-    risk = json.loads(data['risk'])
+    risk = data['risk']
     project_start = payload['project_start']
     todays_date = today()
     data = []
@@ -60,6 +60,7 @@ def result(data):
         for p in t["payments"]:
             if p['date'] > todays_date:
                 pct_diff = percent_diff(start=obj["project_start_rate"], end=obj["todays_rate"])
+                
                 pct_risk = get_risk_by_date(_list=risk, pair=pair, date=p['date'])
                 obj["payments"].append(dict(date=p['date'],pct_risk=pct_risk, pct_diff_since_start=pct_diff, amount=p['amount']))
         data.append(obj)

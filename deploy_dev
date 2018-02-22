@@ -1,0 +1,6 @@
+UPDATE_MSG=$1 
+git add .
+git commit -m $UPDATE_MSG
+git push
+sa
+zappa update production
