@@ -54,13 +54,16 @@ def result(data):
         pair = currency_from+currency_to
         obj['direction'] = t['direction']
         obj['pair'] = pair
-        obj["project_start_rate"] = queryCurrencyApi(pair=pair, date=project_start)
-        obj["todays_rate"] = queryCurrencyApi(pair=pair, date=today())
+        if t['start'] >= todays_date:
+            obj["project_start_rate"] = queryCurrencyApi(pair=pair, date=today())
+            obj["todays_rate"] = queryCurrencyApi(pair=pair, date=today())
+        else:
+            obj["project_start_rate"] = queryCurrencyApi(pair=pair, date=project_start)
+            obj["todays_rate"] = queryCurrencyApi(pair=pair, date=today())
         obj['payments'] = []
         for p in t["payments"]:
-            if p['date'] > todays_date:
+            if p['date'] > todays_date: # Har projektet ens startat
                 pct_diff = percent_diff(start=obj["project_start_rate"], end=obj["todays_rate"])
-                
                 pct_risk = get_risk_by_date(_list=risk, pair=pair, date=p['date'])
                 obj["payments"].append(dict(date=p['date'],pct_risk=pct_risk, pct_diff_since_start=pct_diff, amount=p['amount']))
         data.append(obj)
