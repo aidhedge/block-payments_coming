@@ -65,7 +65,11 @@ def result(data):
             if p['date'] > todays_date: # Har projektet ens startat
                 pct_diff = percent_diff(start=obj["project_start_rate"], end=obj["todays_rate"])
                 pct_risk = get_risk_by_date(_list=risk, pair=pair, date=p['date'])
-                obj["payments"].append(dict(date=p['date'],pct_risk=pct_risk, pct_diff_since_start=pct_diff, amount=p['amount']))
+                if t['direction'] == 'in':
+                    obj["payments"].append(dict(date=p['date'],pct_risk=pct_risk, pct_diff_since_start=pct_diff, amount=p['amount']*obj["project_start_rate"]))
+                else:
+                    obj["payments"].append(dict(date=p['date'],pct_risk=pct_risk, pct_diff_since_start=pct_diff, amount=p['amount']))
+
         data.append(obj)
     return data  
        
