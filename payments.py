@@ -54,12 +54,16 @@ def result(data):
         pair = currency_from+currency_to
         obj['direction'] = t['direction']
         obj['pair'] = pair
-        if t['start'] >= todays_date:
-            obj["project_start_rate"] = queryCurrencyApi(pair=pair, date=today())
-            obj["todays_rate"] = queryCurrencyApi(pair=pair, date=today())
+        if 'fixed_rate' in t:
+            obj["project_start_rate"] = float(t['fixed_rate'])
+            obj["todays_rate"] = float(t['fixed_rate'])
         else:
-            obj["project_start_rate"] = queryCurrencyApi(pair=pair, date=project_start)
-            obj["todays_rate"] = queryCurrencyApi(pair=pair, date=today())
+            if t['start'] >= todays_date:
+                obj["project_start_rate"] = queryCurrencyApi(pair=pair, date=today())
+                obj["todays_rate"] = queryCurrencyApi(pair=pair, date=today())
+            else:
+                obj["project_start_rate"] = queryCurrencyApi(pair=pair, date=project_start)
+                obj["todays_rate"] = queryCurrencyApi(pair=pair, date=today())
         obj['payments'] = []
         for p in t["payments"]:
             if p['date'] > todays_date: # Har projektet ens startat
