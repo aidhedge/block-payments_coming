@@ -54,6 +54,7 @@ def result(data):
         pair = currency_from+currency_to
         obj['direction'] = t['direction']
         obj['pair'] = pair
+        obj['uuid'] = t['uuid']
         if 'fixed_rate' in t:
             obj["project_start_rate"] = float(t['fixed_rate'])
             obj["todays_rate"] = float(t['fixed_rate'])
